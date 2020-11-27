@@ -1,16 +1,22 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "api.fullname" . }}
-  namespace:fede
+  name: api-fede
+  namespace: fede
   labels:
-    {{- include "api.labels" . | nindent 4 }}
+    app.kubernetes.io/instance: api-fede
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: api-fede
+    app.kubernetes.io/version: latest
+    helm.sh/chart: api-fede-0.1.0
 spec:
-  type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: 3001
+    - name: http
       protocol: TCP
-      name: http
+      port: 3001
+      targetPort: 3001
   selector:
-    {{- include "api.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/instance: api-fede
+    app.kubernetes.io/name: api-fede
+  type: ClusterIP
+  sessionAffinity: None
